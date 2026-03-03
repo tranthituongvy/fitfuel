@@ -1,12 +1,10 @@
-function FoodCard({ name, calories, onClick }) {   
-
-    return (
-        <div onClick={onClick}>
-            <h3>{name}</h3>
-            <p>{calories} cal</p>
-        </div>
-
-    );
+function FoodCard({ food, onIncrease }) {
+  return (
+    <div onClick={() => onIncrease(food.id)}>
+      <h3>{food.name}</h3>
+      <p>{food.calories} cal</p>
+    </div>
+  );
 }
 
 export default FoodCard;

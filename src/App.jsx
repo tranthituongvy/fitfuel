@@ -1,14 +1,13 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
+import { FoodContext, FoodProvider } from "./context/FoodContext";
 import Home from "./pages/Home";
 
 function App() {
-  return (
-    <div>
-      <Navbar />
-
-      <Home />    
-    </div>
+  return (    
+    <FoodProvider>
+      <Home />
+    </FoodProvider>  
   );
 }
 
