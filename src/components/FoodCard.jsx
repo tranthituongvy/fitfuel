@@ -1,24 +1,14 @@
-import { useContext } from "react";
-import { FoodContext } from "../context/FoodContext";
-
-//function FoodCard({ food, onIncrease }) {
-  //return (
-    //<div onClick={() => onIncrease(food.id)}>
-      //<h3>{food.name}</h3>
-      //<p>{food.calories} cal</p>
-    //</div>
-  //);  
-//}
-
-function FoodCard({food}) {
-  const { increaseCalories } = useContext(FoodContext);
-
+function FoodCard({ food, onIncrease, onDelete }) {
   return (
-    <div onClick={() => increaseCalories(food.id)}>
+    <div>
       <h3>{food.name}</h3>
-      <p>{food.calories} cal</p>
+      <p onClick={() => onIncrease(food.id)}>{food.calories} cal</p>
+
+      <button onClick={() => onDelete(food.id)}>
+        Delete
+      </button>
     </div>
-  );
+  );  
 }
 
 export default FoodCard;

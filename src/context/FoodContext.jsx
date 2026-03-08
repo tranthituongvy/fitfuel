@@ -1,4 +1,4 @@
-import { Children, createContext, useState } from "react";
+import { createContext, useState } from "react";
 
 export const FoodContext = createContext();
 
@@ -29,8 +29,14 @@ export const FoodProvider = ({ children }) => {
         setFoods(updateFoods);
     };
 
+    const deleteFood = (id) => {
+        setFoods(prevFoods => 
+            prevFoods.filter(food => food.id !== id)
+        );
+    };
+
     return (
-        <FoodContext.Provider value={{ foods, addFood, increaseCalories }}>
+        <FoodContext.Provider value={{ foods, addFood, increaseCalories, deleteFood }}>
             {children}
         </FoodContext.Provider>
     );
