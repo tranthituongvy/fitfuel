@@ -35,8 +35,18 @@ export const FoodProvider = ({ children }) => {
         );
     };
 
+    const updateCalories = (id, newCalories) => {
+        setFoods(prevFoods => 
+            prevFoods.map(food => 
+                food.id === id
+                ? {...food, calories: newCalories}
+                :food
+            )
+        );
+    };
+
     return (
-        <FoodContext.Provider value={{ foods, addFood, increaseCalories, deleteFood }}>
+        <FoodContext.Provider value={{ foods, addFood, increaseCalories, deleteFood, updateCalories }}>
             {children}
         </FoodContext.Provider>
     );

@@ -3,7 +3,7 @@ import { FoodContext } from "../context/FoodContext";
 import FoodCard from "../components/FoodCard";
 
 function Home() {
-   const { foods, addFood, increaseCalories, deleteFood } = useContext(FoodContext);
+   const { foods, addFood, increaseCalories, deleteFood, updateCalories } = useContext(FoodContext);
 
    return (
     <div className="home-container">
@@ -15,6 +15,7 @@ function Home() {
           food={food}
           onIncrease={increaseCalories}
           onDelete={deleteFood}
+          onUpdateCalories={updateCalories}
         />
       ))}
     </div>

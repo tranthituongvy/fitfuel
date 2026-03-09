@@ -1,6 +1,6 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import { FoodContext, FoodProvider } from "./context/FoodContext";
+import { FoodProvider } from "./context/FoodContext";
 import Home from "./pages/Home";
 
 function App() {
