@@ -1,13 +1,23 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const FoodContext = createContext();
 
 export const FoodProvider = ({ children }) => {
-    const [foods, setFoods] = useState([
-        { id:1, name: "Chicken Breast", calories: 200 },
-        { id:2, name: "Salmon", calories: 208 },
-        { id:3, name: "Egg", calories: 78 },
-    ]);
+    
+    const [foods, setFoods] = useState(() => {
+        const savedFoods = localStorage.getItem("foods");
+
+        return savedFoods ? JSON.parse(savedFoods) : [
+            { id:1, name: "Chicken Breast", calories: 200 },
+            { id:2, name: "Salmon", calories: 208 },
+            { id:3, name: "Egg", calories: 78 },
+        ]
+
+    });
+
+    useEffect(() => {
+        localStorage.setItem("foods", JSON.stringify(foods));
+    }, [foods]);
 
     const addFood = () => {
         const newFood = {
@@ -20,13 +30,13 @@ export const FoodProvider = ({ children }) => {
     };
 
     const increaseCalories = (id) => {
-        const updateFoods = foods.map(food => 
-            food.id === id
-            ?{ ...food, calories: food.calories + 10 }
-            : food
+        setFoods(prevFoods =>
+            prevFoods.map(food =>
+                food.id === id
+                ? { ...food, calories: food.calories + 10 }
+                : food
+            )
         );
-
-        setFoods(updateFoods);
     };
 
     const deleteFood = (id) => {
