@@ -42,15 +42,17 @@ function Home() {
 
       <button onClick={addFood}>Add Food</button>
 
-      {sortedFoods.map(food => (
-        <FoodCard
-          key={food.id}
-          food={food}
-          onIncrease={increaseCalories}
-          onDelete={deleteFood}
-          onUpdateCalories={updateCalories}
-        />
-      ))}
+      <div className="food-grid">
+        {sortedFoods.map(food => (
+          <FoodCard
+            key={food.id}
+            food={food}
+            onIncrease={increaseCalories}
+            onDelete={deleteFood}
+            onUpdateCalories={updateCalories}
+          />
+        ))}
+      </div>  
     </div>
    );
 }

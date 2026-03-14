@@ -1,18 +1,24 @@
 function FoodCard({ food, onIncrease, onDelete, onUpdateCalories }) {
+  
+  const { id, name, calories } = food;
+
   return (
-    <div>
-      <h3>{food.name}</h3>
+    <div className="food-card">
+      <h3>{name}</h3>
       <input
         type="number"
-        value={food.calories}
+        value={calories}
         onChange={(e) => 
-          onUpdateCalories(food.id, Number(e.target.value))
+          onUpdateCalories(id, Number(e.target.value))
         }
       /> 
       <span> cal</span> 
-      <p onClick={() => onIncrease(food.id)}>{food.calories} cal</p>
 
-      <button onClick={() => onDelete(food.id)}>
+      <p onClick={() => onIncrease(id)}>{
+        calories} cal
+      </p>
+
+      <button onClick={() => onDelete(id)}>
         Delete
       </button>
     </div>
