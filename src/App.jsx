@@ -1,5 +1,4 @@
-import "./App.css";
-import Navbar from "./components/Navbar";
+import "./styles/App.scss";
 import { FoodProvider } from "./context/FoodContext";
 import Home from "./pages/Home";
 

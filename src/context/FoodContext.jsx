@@ -19,11 +19,11 @@ export const FoodProvider = ({ children }) => {
         localStorage.setItem("foods", JSON.stringify(foods));
     }, [foods]);
 
-    const addFood = () => {
+    const addFood = (name, calories) => {
         const newFood = {
             id: Date.now(),
-            name: "Banana",
-            calories: 89
+            name,
+            calories
         };
 
         setFoods([...foods, newFood]);

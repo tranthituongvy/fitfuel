@@ -6,6 +6,8 @@ function Home() {
    const { foods, addFood, increaseCalories, deleteFood, updateCalories } = useContext(FoodContext);
    const [search, setSearch] = useState("");
    const [sortType, setSortType] = useState("name");
+   const [name, setName] = useState("");
+   const [calories, setCalories] = useState("");
 
    const filteredFoods = foods.filter(food =>
     food.name.toLowerCase().includes(search.trim().toLowerCase())
@@ -22,6 +24,15 @@ function Home() {
 
     return 0;
    })
+
+   const handleAddFood = () => {
+    if(!name || !calories) return;
+
+    addFood(name, Number(calories));
+
+    setName("");
+    setCalories("");
+   }
 
    return (
     <div className="home-container">
@@ -40,7 +51,23 @@ function Home() {
         <option value="calories">Sort by Calories</option>
       </select>
 
-      <button onClick={addFood}>Add Food</button>
+      <div className="food-form">
+          <input type="text"
+            placeholder="Food name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <input type="number"
+            placeholder="Calories"  
+            value={calories}
+            onChange={(e) => setCalories(e.target.value)}
+          />
+
+          <button onClick={handleAddFood}>
+            Add Food
+          </button>  
+      </div>  
 
       <div className="food-grid">
         {sortedFoods.map(food => (
