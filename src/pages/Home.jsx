@@ -34,6 +34,15 @@ function Home() {
     setCalories("");
    }
 
+   const totalFoods = foods.length;
+
+   const totalCalories = foods.reduce((sum, food) => {
+    return sum + food.calories;
+   }, 0);
+
+   const averageCalories = 
+    totalFoods === 0 ? 0 : Math.round(totalCalories / totalFoods);
+
    return (
     <div className="home-container">
       <input
@@ -50,6 +59,25 @@ function Home() {
         <option value="name">Sort by Name</option>
         <option value="calories">Sort by Calories</option>
       </select>
+
+      <div className="dashboard">
+        
+        <div className="stat-card">
+          <h4>Total Food</h4>
+          <p>{totalFoods}</p>
+        </div>
+
+        <div className="stat-card">
+          <h4>Total Calories</h4>
+          <p>{totalCalories}</p>
+        </div>
+
+        <div className="stat-card">
+          <h4>Average Calories</h4>
+          <p>{averageCalories}</p>
+        </div>
+
+      </div>
 
       <div className="food-form">
           <input type="text"
