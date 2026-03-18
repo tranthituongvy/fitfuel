@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { FoodContext } from "../context/FoodContext";
 import FoodCard from "../components/FoodCard";
+import CaloriesChart from "../components/CaloriesChart";
 
 function Home() {
    const { foods, addFood, increaseCalories, deleteFood, updateCalories } = useContext(FoodContext);
@@ -43,6 +44,13 @@ function Home() {
    const averageCalories = 
     totalFoods === 0 ? 0 : Math.round(totalCalories / totalFoods);
 
+   const [viewType, setViewType] = useState("top");
+
+  const chartData =
+      viewType === "top"
+        ? [...foods].sort((a, b) => b.calories - a.calories).slice(0, 5)
+        : foods; 
+
    return (
     <div className="home-container">
       <input
@@ -78,6 +86,11 @@ function Home() {
         </div>
 
       </div>
+
+      <div className="chart-container">
+        <h3>Top Calories Foods</h3>  
+        <CaloriesChart foods={chartData} />
+      </div>      
 
       <div className="food-form">
           <input type="text"
