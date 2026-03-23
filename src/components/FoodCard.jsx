@@ -1,6 +1,6 @@
 function FoodCard({ food, onIncrease, onDelete, onUpdateCalories }) {
   
-  const { id, name, calories } = food;
+  const { id, name, calories } = food;  
 
   return (
     <div className="food-card">
@@ -18,7 +18,7 @@ function FoodCard({ food, onIncrease, onDelete, onUpdateCalories }) {
         calories} cal
       </p>
 
-      <button onClick={() => onDelete(id)}>
+      <button onClick={onDelete}>
         Delete
       </button>
     </div>

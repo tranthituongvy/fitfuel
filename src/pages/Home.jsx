@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { FoodContext } from "../context/FoodContext";
 import FoodCard from "../components/FoodCard";
 import CaloriesChart from "../components/CaloriesChart";
@@ -27,12 +27,11 @@ function Home() {
    })
 
    const handleAddFood = () => {
-    if(!name || !calories) return;
+    if (!name || !calories) return;
 
     addFood(name, Number(calories));
 
-    setName("");
-    setCalories("");
+    inputRef.current.focus();
    }
 
    const totalFoods = foods.length;
@@ -49,7 +48,24 @@ function Home() {
   const chartData =
       viewType === "top"
         ? [...foods].sort((a, b) => b.calories - a.calories).slice(0, 5)
-        : foods; 
+        : foods;
+        
+  const [selectedId, setSelectedId] = useState(null);  
+  const selectedFood = foods.find(f => f.id === selectedId);  
+  
+  useEffect(() => {
+  if (!selectedId) return;
+
+    const handleKey = (e) => {
+      if (e.key === "Escape") {
+        setSelectedId(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [selectedId]);
+
 
    return (
     <div className="home-container">
@@ -88,7 +104,9 @@ function Home() {
       </div>
 
       <div className="chart-container">
-        <h3>Top Calories Foods</h3>  
+        <h3>
+          {viewType === "top" ? "Top 5 Calories Foods" : "All Foods"}
+        </h3>  
         <CaloriesChart foods={chartData} />
       </div>      
 
@@ -116,13 +134,33 @@ function Home() {
             key={food.id}
             food={food}
             onIncrease={increaseCalories}
-            onDelete={deleteFood}
+            onDelete={() => setSelectedId(food.id)}
             onUpdateCalories={updateCalories}
           />
         ))}
       </div>  
-    </div>
-   );
+
+      {selectedId && (
+        <div className="modal-overlay" onClick={() => setSelectedId(null)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Are you sure?</h3>
+            <p>Do you really want to delete "{selectedFood?.name}"?</p>
+
+            <button onClick={() => {
+              deleteFood(selectedId);
+              setSelectedId(null);
+            }}>
+              Yes, Delete
+            </button>
+
+            <button  onClick={() => setSelectedId(null)}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+    </div>    
+  );  
 }
 
 export default Home;
