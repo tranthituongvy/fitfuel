@@ -2,6 +2,9 @@ import { useContext, useState, useEffect } from "react";
 import { FoodContext } from "../context/FoodContext";
 import FoodCard from "../components/FoodCard";
 import CaloriesChart from "../components/CaloriesChart";
+import Dashboard from "../components/Dashboard";
+import ConfirmModal from "../components/ConfirmModal";
+import FoodForm from "../components/FoodForm";
 
 function Home() {
    const { foods, addFood, increaseCalories, deleteFood, updateCalories } = useContext(FoodContext);
@@ -30,8 +33,6 @@ function Home() {
     if (!name || !calories) return;
 
     addFood(name, Number(calories));
-
-    inputRef.current.focus();
    }
 
    const totalFoods = foods.length;
@@ -84,49 +85,26 @@ function Home() {
         <option value="calories">Sort by Calories</option>
       </select>
 
-      <div className="dashboard">
-        
-        <div className="stat-card">
-          <h4>Total Food</h4>
-          <p>{totalFoods}</p>
-        </div>
-
-        <div className="stat-card">
-          <h4>Total Calories</h4>
-          <p>{totalCalories}</p>
-        </div>
-
-        <div className="stat-card">
-          <h4>Average Calories</h4>
-          <p>{averageCalories}</p>
-        </div>
-
-      </div>
+      <Dashboard
+        totalFoods={totalFoods}
+        totalCalories={totalCalories}
+        averageCalories={averageCalories}
+      />        
 
       <div className="chart-container">
         <h3>
           {viewType === "top" ? "Top 5 Calories Foods" : "All Foods"}
         </h3>  
         <CaloriesChart foods={chartData} />
-      </div>      
+      </div> 
 
-      <div className="food-form">
-          <input type="text"
-            placeholder="Food name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-
-          <input type="number"
-            placeholder="Calories"  
-            value={calories}
-            onChange={(e) => setCalories(e.target.value)}
-          />
-
-          <button onClick={handleAddFood}>
-            Add Food
-          </button>  
-      </div>  
+      <FoodForm 
+        name = {name}
+        calories = {calories}
+        onNameChange ={(e) => setName(e.target.value)}
+        onCaloriesChange = {(e) => setCalories(e.target.value)}
+        handleAddFood = {handleAddFood}
+      />  
 
       <div className="food-grid">
         {sortedFoods.map(food => (
@@ -140,25 +118,16 @@ function Home() {
         ))}
       </div>  
 
-      {selectedId && (
-        <div className="modal-overlay" onClick={() => setSelectedId(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h3>Are you sure?</h3>
-            <p>Do you really want to delete "{selectedFood?.name}"?</p>
+      <ConfirmModal
+        isOpen={selectedId}
+        food ={selectedFood}
+        onConfirm={() => {
+          deleteFood(selectedId);
+          setSelectedId(null);
+        }}
 
-            <button onClick={() => {
-              deleteFood(selectedId);
-              setSelectedId(null);
-            }}>
-              Yes, Delete
-            </button>
-
-            <button  onClick={() => setSelectedId(null)}>
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
+        onCancel={() => setSelectedId(null)}
+      />
     </div>    
   );  
 }
