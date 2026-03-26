@@ -7,7 +7,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import FoodForm from "../components/FoodForm";
 
 function Home() {
-   const { foods, addFood, increaseCalories, deleteFood, updateCalories } = useContext(FoodContext);
+   const { foods, addFood, increaseCalories, deleteFood, updateCalories, updateName } = useContext(FoodContext);
    const [search, setSearch] = useState("");
    const [sortType, setSortType] = useState("name");
    const [name, setName] = useState("");
@@ -114,6 +114,7 @@ function Home() {
             onIncrease={increaseCalories}
             onDelete={() => setSelectedId(food.id)}
             onUpdateCalories={updateCalories}
+            onUpdateName={updateName}
           />
         ))}
       </div>  

@@ -1,10 +1,41 @@
-function FoodCard({ food, onIncrease, onDelete, onUpdateCalories }) {
+import { useState, useEffect } from "react";
+
+function FoodCard({ food, onIncrease, onDelete, onUpdateCalories, onUpdateName }) {
   
   const { id, name, calories } = food;  
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState(name);
+
+  useEffect(() => {
+    setEditedName(name);
+  }, [name]);
+
   return (
     <div className="food-card">
-      <h3>{name}</h3>
+      {isEditing ? (
+        <input
+          value={editedName}
+          onChange={(e) => setEditedName(e.target.value)}
+          onBlur={() => { 
+            if(editedName.trim()) {
+              onUpdateName(id, editedName.trim());
+            }
+            setIsEditing(false)
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onUpdateName(id, editedName.trim());
+              setIsEditing(false);
+            }
+          }}
+        />  
+      ) : (
+        <h3 onClick={() => setIsEditing(true)}>
+          {name}
+        </h3>
+      )}
+      
       <input
         type="number"
         value={calories}
