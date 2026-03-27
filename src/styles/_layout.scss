@@ -118,6 +118,17 @@
   color: #fff;
 }
 
+.toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 16px;
+  animation: fallIn 0.3s ease;
+}
+
 @keyframes fadeIn {
   from { opacity: 0 }
   to { opacity: 1 }

@@ -17,17 +17,23 @@ function FoodCard({ food, onIncrease, onDelete, onUpdateCalories, onUpdateName }
         <input
           value={editedName}
           onChange={(e) => setEditedName(e.target.value)}
-          onBlur={() => { 
-            if(editedName.trim()) {
-              onUpdateName(id, editedName.trim());
-            }
-            setIsEditing(false)
-          }}
+          
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              onUpdateName(id, editedName.trim());
+              if (editedName.trim()) {
+                onUpdateName(id, editedName.trim());
+              }
               setIsEditing(false);
             }
+          }}
+
+          onBlur={() => { 
+             if (!isEditing) return; 
+
+            if (editedName.trim()) {
+              onUpdateName(id, editedName.trim());
+            }
+            setIsEditing(false);
           }}
         />  
       ) : (

@@ -5,6 +5,7 @@ import CaloriesChart from "../components/CaloriesChart";
 import Dashboard from "../components/Dashboard";
 import ConfirmModal from "../components/ConfirmModal";
 import FoodForm from "../components/FoodForm";
+import Toast from "../components/Toast";
 
 function Home() {
    const { foods, addFood, increaseCalories, deleteFood, updateCalories, updateName } = useContext(FoodContext);
@@ -30,9 +31,13 @@ function Home() {
    })
 
    const handleAddFood = () => {
-    if (!name || !calories) return;
+    if (!name.trim() || calories === "") return;
 
     addFood(name, Number(calories));
+    setToastMessage("Food added ✅");
+
+    setName("");
+    setCalories("");
    }
 
    const totalFoods = foods.length;
@@ -67,7 +72,25 @@ function Home() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [selectedId]);
 
+  const [toastMessage, setToastMessage] = useState("");
 
+  useEffect(() => {
+    if(!toastMessage) return;
+
+    const timer = setTimeout(() => {
+      setToastMessage("");
+    }, 2000)
+
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
+
+  const handleConfirmDelete = () => {
+    deleteFood(selectedId);
+    setSelectedId(null);
+    setToastMessage("Food deleted ❌");
+  };
+
+ 
    return (
     <div className="home-container">
       <input
@@ -114,18 +137,20 @@ function Home() {
             onIncrease={increaseCalories}
             onDelete={() => setSelectedId(food.id)}
             onUpdateCalories={updateCalories}
-            onUpdateName={updateName}
+            onUpdateName={(id, name) => {
+              updateName(id, name);
+              setToastMessage("Updated ✏️");
+            }}
           />
         ))}
       </div>  
 
+      <Toast message={toastMessage}/>
+
       <ConfirmModal
         isOpen={selectedId}
         food ={selectedFood}
-        onConfirm={() => {
-          deleteFood(selectedId);
-          setSelectedId(null);
-        }}
+        onConfirm={handleConfirmDelete}
 
         onCancel={() => setSelectedId(null)}
       />
