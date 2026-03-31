@@ -4,6 +4,7 @@ import FoodCard from "../components/FoodCard";
 import CaloriesChart from "../components/CaloriesChart";
 import Dashboard from "../components/Dashboard";
 import ConfirmModal from "../components/ConfirmModal";
+import Modal from "../components/Modal";
 import FoodForm from "../components/FoodForm";
 import Toast from "../components/Toast";
 
@@ -13,6 +14,9 @@ function Home() {
    const [sortType, setSortType] = useState("name");
    const [name, setName] = useState("");
    const [calories, setCalories] = useState("");
+   const [showModal, setShowModal] = useState(false);
+   const [toast, setToast] = useState(null); 
+   const [selectedFood, setSelectedFood] = useState(null);  
 
    const filteredFoods = foods.filter(food =>
     food.name.toLowerCase().includes(search.trim().toLowerCase())
@@ -57,7 +61,7 @@ function Home() {
         : foods;
         
   const [selectedId, setSelectedId] = useState(null);  
-  const selectedFood = foods.find(f => f.id === selectedId);  
+  const foundFood = foods.find(f => f.id === selectedId);  
   
   useEffect(() => {
   if (!selectedId) return;
@@ -84,10 +88,22 @@ function Home() {
     return () => clearTimeout(timer);
   }, [toastMessage]);
 
+  const handleClickDelete = (food) => {
+    setSelectedFood(food);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   const handleConfirmDelete = () => {
-    deleteFood(selectedId);
-    setSelectedId(null);
-    setToastMessage("Food deleted ❌");
+    if (!selectedFood) return;
+
+    deleteFood(selectedFood.id);  
+    setSelectedFood(null);  
+    setShowModal(false); 
+    setToast("Deleted successfully ✅");
   };
 
  
@@ -135,7 +151,7 @@ function Home() {
             key={food.id}
             food={food}
             onIncrease={increaseCalories}
-            onDelete={() => setSelectedId(food.id)}
+            onDelete={() => handleClickDelete(food)}
             onUpdateCalories={updateCalories}
             onUpdateName={(id, name) => {
               updateName(id, name);
@@ -143,17 +159,23 @@ function Home() {
             }}
           />
         ))}
-      </div>  
+      </div>       
 
-      <Toast message={toastMessage}/>
-
-      <ConfirmModal
-        isOpen={selectedId}
-        food ={selectedFood}
+      {/* Modal */}
+      <Modal
+        isOpen={showModal}
+        onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
-
-        onCancel={() => setSelectedId(null)}
       />
+
+      {/* Toast */}
+      {toast && (
+        <Toast
+          message={toast}
+          onClose={() => setToast(null)}
+        />
+      )}      
+     
     </div>    
   );  
 }

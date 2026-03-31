@@ -1,9 +1,20 @@
+import { useState, useEffect } from "react";
 
-function Toast({message}) {
-    if(!message) return null;
+const Toast = ({message, onClose}) => {
+    const [hide, setHide] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setHide(true);
+            setTimeout(onClose, 300);
+        }, 2000);
+
+        return () => clearTimeout(timer);
+    }, [onClose]);
+   
 
     return (
-        <div className="toast">
+        <div className={`toast ${hide ? "hide" : ""}`}>
             {message}
         </div>
     );

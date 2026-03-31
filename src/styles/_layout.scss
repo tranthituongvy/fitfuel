@@ -112,6 +112,7 @@ input:focus {
   display: flex;
   justify-content: center;
   align-items: center;
+
   animation: fadeIn 0.2s ease forwards;
 
   &.closing {
@@ -163,7 +164,12 @@ input:focus {
   color: #fff;
   border-radius: 8px;
   padding: 10px 16px;
-  animation: slideIn 0.3s ease;
+
+  animation: slideIn 0.3s ease forwards;
+
+  &.hide {
+    animation: slideOut 0.3s ease forwards;
+  }
 }
 
 @keyframes fadeIn {
@@ -182,19 +188,6 @@ input:focus {
   }
 }
 
-@keyframes slideIn {
-  from {
-    transform: translateX(120%);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  
-}
-
 @keyframes fadeOut {
   from { opacity: 1 }
   to { opacity: 0 }
@@ -210,3 +203,26 @@ input:focus {
     transform: scale(0.9);
   }
 }
+
+@keyframes slideIn {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
