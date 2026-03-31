@@ -1,16 +1,16 @@
-body {
-  transition: background 0.3s ease, color 0.3s ease;
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.button {
-  transition: all 0.2s ease;
+button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0,0,0,0.1);
   }
 
-  &.active {
+  &:active {
     transform: scale(0.96);
   }
 }
@@ -23,6 +23,12 @@ body {
   position: fixed;
   top: 20px;
   right: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  }
 }
 
 input:focus {
@@ -107,6 +113,10 @@ input:focus {
   justify-content: center;
   align-items: center;
   animation: fadeIn 0.2s ease forwards;
+
+  &.closing {
+    animation: fadeOut 0.2s ease forwards;
+  }
 }
 
 .modal {
@@ -116,6 +126,10 @@ input:focus {
   text-align: center;
   width: 300px;
   animation: scaleIn 0.2s ease forwards;
+
+  &.closing {
+    animation: scaleOut 0.2s ease forwards;
+  }
 
   button {
     margin: 10px;
@@ -179,4 +193,20 @@ input:focus {
     opacity: 1;
   }
   
+}
+
+@keyframes fadeOut {
+  from { opacity: 1 }
+  to { opacity: 0 }
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
 }
