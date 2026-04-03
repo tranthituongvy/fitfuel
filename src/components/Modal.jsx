@@ -19,8 +19,8 @@ const Modal = ({ isOpen, onClose, onConfirm }) => {
     }
 
     return (
-        <div className={`modal-overlay ${closing ? "closing": ""}`}>
-            <div className={`modal ${closing ? "closing": ""}`}>
+        <div className={`modal-overlay ${closing ? "closing": ""}`} onClick={handleClose}>
+            <div className={`modal ${closing ? "closing": ""}`} onClick={(e) => e.stopPropagation()}>
                 <p>Are you sure?</p>
                 <button onClick={onConfirm}>Delete</button>
                 <button onClick={handleClose}>Cancel</button>
