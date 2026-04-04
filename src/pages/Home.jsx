@@ -57,6 +57,8 @@ function Home() {
     setCalories("");
   };
 
+  const isSearching = search.trim() !== "";
+
   return (
     <div className="home-container">
 
@@ -77,14 +79,28 @@ function Home() {
         handleAddFood={handleAddFood}
       />
 
-      <FoodList
-        foods={sortedFoods}
-        onIncrease={increaseCalories}
-        onDelete={openDeleteModal}
-        onUpdateCalories={updateCalories}
-        onUpdateName={updateName}
-        setToast={setToast}
-      />
+      {sortedFoods.length === 0 ? (
+        isSearching ? (
+          <div className="empty-state">
+            <h3>No results found 🔍</h3>
+            <p>Try "chicken", "rice", or "salad"</p>
+          </div>
+        ) : (
+          <div className="empty-state">
+            <h3>No food yet 🍎</h3>
+            <p>Start by adding your first meal!</p>
+          </div>
+        )
+      ) : (
+        <FoodList
+          foods={sortedFoods}
+          onIncrease={increaseCalories}
+          onDelete={openDeleteModal}
+          onUpdateCalories={updateCalories}
+          onUpdateName={updateName}
+          setToast={setToast}
+        />
+      )}
 
       <Modal
         isOpen={showModal}

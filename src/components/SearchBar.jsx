@@ -3,7 +3,7 @@ function SearchBar({ search, setSearch, sortType, setSortType }) {
     <>
       <input
         type="text"
-        placeholder="Search food..."
+        placeholder="Search foods..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
