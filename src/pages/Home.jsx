@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { FoodContext } from "../context/FoodContext";
 
+import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import FoodList from "../components/FoodList";
 import SummarySection from "../components/SummarySection";
@@ -45,7 +46,7 @@ function Home() {
   const confirmDelete = () => {
     if (!selectedFood) return;
     deleteFood(selectedFood.id);
-    setToast("Deleted successfully ✅");
+    setToast(`Deleted "${selectedFood.name}" ❌`);
     closeModal();
   };
 
@@ -61,6 +62,8 @@ function Home() {
 
   return (
     <div className="home-container">
+
+      <Header />
 
       <SearchBar
         search={search}

@@ -1,4 +1,4 @@
-* {
+body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -12,6 +12,42 @@ button {
 
   &:active {
     transform: scale(0.96);
+  }
+}
+
+.app-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 10;
+
+  .logo {
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    p {
+      margin: 4px 0 0;
+      font-size: 14px;
+      color: #666;
+    }
+  }
+}
+
+.app.dark {
+  .app-header {
+    border-bottom-color: #333;
+    background: #121212;
+
+    .logo {
+      p {
+        color: #aaa;
+      }
+    }
   }
 }
 
@@ -38,7 +74,9 @@ input:focus {
 }
 
 .home-container {
-    padding: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
 
     input,
     select {
@@ -160,6 +198,7 @@ input:focus {
   position: fixed;
   right: 20px;
   bottom: 20px;
+  z-index: 999;
   background-color: #333;
   color: #fff;
   border-radius: 8px;
