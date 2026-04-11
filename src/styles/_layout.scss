@@ -24,6 +24,10 @@ button {
   background-color: #fff;
   z-index: 10;
 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   .logo {
     h1 {
       margin: 0;
@@ -56,7 +60,7 @@ button {
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  position: fixed;
+  position: static;
   top: 20px;
   right: 20px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FoodContext } from "../context/FoodContext";
 
 import Header from "../components/Header";
@@ -20,6 +20,14 @@ function Home() {
   const [toast, setToast] = useState(null);
   const [selectedFood, setSelectedFood] = useState(null);
   const [viewType] = useState("top");
+
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
 
   // filter + sort
   const filteredFoods = foods.filter(food =>
@@ -61,64 +69,66 @@ function Home() {
   const isSearching = search.trim() !== "";
 
   return (
-    <div className="home-container">
+    <div className={`app ${darkMode ? "dark" : ""}`}>
+      <div className="home-container">
 
-      <Header />
+        <Header darkMode={darkMode} setDarkMode={setDarkMode} />
 
-      <SearchBar
-        search={search}
-        setSearch={setSearch}
-        sortType={sortType}
-        setSortType={setSortType}
-      />
+        <SearchBar
+          search={search}
+          setSearch={setSearch}
+          sortType={sortType}
+          setSortType={setSortType}
+        />
 
-      <SummarySection foods={foods} viewType={viewType} />
+        <SummarySection foods={foods} viewType={viewType} />
 
-      <FoodForm
-        name={name}
-        calories={calories}
-        onNameChange={(e) => setName(e.target.value)}
-        onCaloriesChange={(e) => setCalories(e.target.value)}
-        handleAddFood={handleAddFood}
-      />
+        <FoodForm
+          name={name}
+          calories={calories}
+          onNameChange={(e) => setName(e.target.value)}
+          onCaloriesChange={(e) => setCalories(e.target.value)}
+          handleAddFood={handleAddFood}
+        />
 
-      {sortedFoods.length === 0 ? (
-        isSearching ? (
-          <div className="empty-state">
-            <h3>No results found 🔍</h3>
-            <p>Try "chicken", "rice", or "salad"</p>
-          </div>
+        {sortedFoods.length === 0 ? (
+          isSearching ? (
+            <div className="empty-state">
+              <h3>No results found 🔍</h3>
+              <p>Try "chicken", "rice", or "salad"</p>
+            </div>
+          ) : (
+            <div className="empty-state">
+              <h3>No food yet 🍎</h3>
+              <p>Start by adding your first meal!</p>
+            </div>
+          )
         ) : (
-          <div className="empty-state">
-            <h3>No food yet 🍎</h3>
-            <p>Start by adding your first meal!</p>
-          </div>
-        )
-      ) : (
-        <FoodList
-          foods={sortedFoods}
-          onIncrease={increaseCalories}
-          onDelete={openDeleteModal}
-          onUpdateCalories={updateCalories}
-          onUpdateName={updateName}
-          setToast={setToast}
+          <FoodList
+            foods={sortedFoods}
+            onIncrease={increaseCalories}
+            onDelete={openDeleteModal}
+            onUpdateCalories={updateCalories}
+            onUpdateName={updateName}
+            setToast={setToast}
+          />
+        )}
+
+        <Modal
+          isOpen={showModal}
+          onClose={closeModal}
+          onConfirm={confirmDelete}
         />
-      )}
 
-      <Modal
-        isOpen={showModal}
-        onClose={closeModal}
-        onConfirm={confirmDelete}
-      />
+        {toast && (
+          <Toast
+            message={toast}
+            onClose={() => setToast(null)}
+          />
+        )}
 
-      {toast && (
-        <Toast
-          message={toast}
-          onClose={() => setToast(null)}
-        />
-      )}
-
-    </div>
+      </div>
+    </div>  
   );
 }
 
