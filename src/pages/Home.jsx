@@ -1,5 +1,4 @@
-import { useContext, useState } from "react";
-import { FoodContext } from "../context/FoodContext";
+import { useState } from "react";
 
 import SearchBar from "../components/SearchBar";
 import FoodList from "../components/FoodList";
@@ -8,28 +7,28 @@ import FoodForm from "../components/FoodForm";
 import Modal from "../components/Modal";
 import Toast from "../components/Toast";
 
-function Home() {
-  const { foods, addFood, increaseCalories, deleteFood, updateCalories, updateName } = useContext(FoodContext);
+import { useFoods } from "../hooks/useFoods";
 
+function Home() {
   const [search, setSearch] = useState("");
   const [sortType, setSortType] = useState("name");
+
+  const {
+  foods,
+  sortedFoods,
+  addFoodHandler,
+  deleteFoodHandler,
+  updateNameHandler,
+  updateCaloriesHandler,
+  increaseCaloriesHandler
+} = useFoods(search, sortType);
+ 
   const [name, setName] = useState("");
   const [calories, setCalories] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [toast, setToast] = useState(null);
   const [selectedFood, setSelectedFood] = useState(null);
-  const [viewType] = useState("top");
-
-  // filter + sort
-  const filteredFoods = foods.filter(food =>
-    food.name.toLowerCase().includes(search.trim().toLowerCase())
-  );
-
-  const sortedFoods = [...filteredFoods].sort((a, b) => {
-    if (sortType === "name") return a.name.localeCompare(b.name);
-    if (sortType === "calories") return a.calories - b.calories;
-    return 0;
-  });
+  const viewType = "top"; 
 
   // handlers
   const openDeleteModal = (food) => {
@@ -43,16 +42,17 @@ function Home() {
   };
 
   const confirmDelete = () => {
-    if (!selectedFood) return;
-    deleteFood(selectedFood.id);
-    setToast("Deleted successfully ✅");
+    if (!selectedFood?.id) return;
+    deleteFoodHandler(selectedFood.id);
+    setToast(`Deleted "${selectedFood.name}" ❌`);
     closeModal();
   };
 
-  const handleAddFood = () => {
+  const handleAddFood = () => {    
     if (!name.trim() || calories === "") return;
-    addFood(name, Number(calories));
-    setToast("Food added ✅");
+
+    addFoodHandler(name, calories);
+    setToast(`Added "${name.trim()}" ✅`);
     setName("");
     setCalories("");
   };
@@ -79,10 +79,10 @@ function Home() {
 
       <FoodList
         foods={sortedFoods}
-        onIncrease={increaseCalories}
+        onIncrease={increaseCaloriesHandler}
         onDelete={openDeleteModal}
-        onUpdateCalories={updateCalories}
-        onUpdateName={updateName}
+        onUpdateCalories={updateCaloriesHandler}
+        onUpdateName={updateNameHandler}
         setToast={setToast}
       />
 
