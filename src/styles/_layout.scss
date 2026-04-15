@@ -1,4 +1,4 @@
-* {
+body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -15,12 +15,54 @@ button {
   }
 }
 
-.changeMode {
+.app-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 10;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .logo {
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 4px 0 0;
+      font-size: 14px;
+      color: #666;
+    }
+  }
+}
+
+.app.dark {
+  .app-header {
+    border-bottom-color: #333;
+    background: #121212;
+
+    .logo {
+      p {
+        color: #aaa;
+      }
+    }
+  }
+}
+
+.changeMode {  
+  font-size: 18px;
   padding: 8px 16px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  position: fixed;
+  position: static;
   top: 20px;
   right: 20px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -38,7 +80,9 @@ input:focus {
 }
 
 .home-container {
-    padding: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
 
     input,
     select {
@@ -160,6 +204,7 @@ input:focus {
   position: fixed;
   right: 20px;
   bottom: 20px;
+  z-index: 999;
   background-color: #333;
   color: #fff;
   border-radius: 8px;
@@ -223,6 +268,21 @@ input:focus {
   to {
     transform: translateX(120%);
     opacity: 0;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  margin-top: 40px;
+  color: #888;
+
+  h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 14px;
   }
 }
 
