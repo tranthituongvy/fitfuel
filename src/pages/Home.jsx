@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+import { useTheme } from "../hooks/useTheme";
+import Header from "../components/Header";
+
 import SearchBar from "../components/SearchBar";
 import FoodList from "../components/FoodList";
 import SummarySection from "../components/SummarySection";
@@ -10,6 +13,7 @@ import Toast from "../components/Toast";
 import { useFoods } from "../hooks/useFoods";
 
 function Home() {
+  const { darkMode, toggleTheme } = useTheme();
   const [search, setSearch] = useState("");
   const [sortType, setSortType] = useState("name");
 
@@ -58,48 +62,52 @@ function Home() {
   };
 
   return (
-    <div className="home-container">
+    <div className={`app ${darkMode ? "dark" : ""}`}>
+      <div className="home-container">
 
-      <SearchBar
-        search={search}
-        setSearch={setSearch}
-        sortType={sortType}
-        setSortType={setSortType}
-      />
+        <Header darkMode={darkMode} toggleTheme={toggleTheme} />
 
-      <SummarySection foods={foods} viewType={viewType} />
-
-      <FoodForm
-        name={name}
-        calories={calories}
-        onNameChange={(e) => setName(e.target.value)}
-        onCaloriesChange={(e) => setCalories(e.target.value)}
-        handleAddFood={handleAddFood}
-      />
-
-      <FoodList
-        foods={sortedFoods}
-        onIncrease={increaseCaloriesHandler}
-        onDelete={openDeleteModal}
-        onUpdateCalories={updateCaloriesHandler}
-        onUpdateName={updateNameHandler}
-        setToast={setToast}
-      />
-
-      <Modal
-        isOpen={showModal}
-        onClose={closeModal}
-        onConfirm={confirmDelete}
-      />
-
-      {toast && (
-        <Toast
-          message={toast}
-          onClose={() => setToast(null)}
+        <SearchBar
+          search={search}
+          setSearch={setSearch}
+          sortType={sortType}
+          setSortType={setSortType}
         />
-      )}
 
-    </div>
+        <SummarySection foods={foods} viewType={viewType} />
+
+        <FoodForm
+          name={name}
+          calories={calories}
+          onNameChange={(e) => setName(e.target.value)}
+          onCaloriesChange={(e) => setCalories(e.target.value)}
+          handleAddFood={handleAddFood}
+        />
+
+        <FoodList
+          foods={sortedFoods}
+          onIncrease={increaseCaloriesHandler}
+          onDelete={openDeleteModal}
+          onUpdateCalories={updateCaloriesHandler}
+          onUpdateName={updateNameHandler}
+          setToast={setToast}
+        />
+
+        <Modal
+          isOpen={showModal}
+          onClose={closeModal}
+          onConfirm={confirmDelete}
+        />
+
+        {toast && (
+          <Toast
+            message={toast}
+            onClose={() => setToast(null)}
+          />
+        )}
+
+      </div>
+    </div>  
   );
 }
 
